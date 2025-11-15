@@ -1,0 +1,44 @@
+ทำต่อจาก week 12
+
+ฟังก์ชัน addProduct
+เป็นฟังก์ชันที่เป็น  post เพื่อที่จะทำการสร้างข้อมูลลงในฐานข้อมูล
+const title = document.getElementById("newTitle").value
+const price = document.getElementById("newPrice").value
+เข้าถึง value ของแต่ละตัวโ้วยการใช้ .value
+await fetch(API, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ title, price: Number(price) })
+  })
+fetch ข้อมูล ส่งด้วย method post headers เป็น json และ body เป็น object ของ json
+loadProducts() เรียกใช้ฟังก์ชัน
+
+
+ฟังก์ชัน updateProduct
+เป็นฟังก์ชันที่ใช้สำหรับการ update ข้อมูลในฐานข้อมูล
+const id = document.getElementById("editId").value
+const title = document.getElementById("editTitle").value
+const price = document.getElementById("editPrice").value
+เข้าถึง value ของแต่ละตัวโ้วยการใช้ .value
+await fetch(`${API}/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ title, price: Number(price) })
+  })
+fetch และส่ง id ของข้อมูลที่ต้องการจะ update และส่งข้อมูลที่ต้องการจะ update ไป
+loadProducts() เรียกใช้ฟังก์ชัน
+
+ฟังก์ชัน deleteProduct
+const id = document.getElementById("deleteId").value 
+เข้าถึง value ด้วยการใช้ .value
+await fetch(`${API}/${id}`, {
+    method: "DELETE"
+  })
+fetch โดยการส่งข้อมูลที่ต้องการลบออกจากฐานข้อมูล
+loadProducts() เรียกใช้ฟังก์ชัน
+
+document.getElementById("btnGet").addEventListener("click", loadProducts)
+document.getElementById("btnPost").addEventListener("click", addProduct)
+document.getElementById("btnPut").addEventListener("click", updateProduct)
+document.getElementById("btnDelete").addEventListener("click", deleteProduct)
+เพิ่ม event click ให้ทุกปุ่มพอคลิกปุ่มไหนก็จะไปเข้าฟังก์ชันนั้น

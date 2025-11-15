@@ -1,0 +1,21 @@
+{
+    "users": [
+    { "id": 1, "name": "Alice Johnson", "email": "alice@example.com" },
+    { "id": 2, "name": "Bob Smith", "email": "bob@example.com" }
+  ],
+
+  "posts": [
+    { "id": 1, "title": "Frontend Tips" },
+    { "id": 2, "title": "How to Use Fetch API" },
+    { "id": 3, "title": "Understanding Async/Await" }
+  ],
+
+  "products": [
+    { "id": 1, "title": "Wireless Mouse", "price": 299 },
+    { "id": 2, "title": "Mechanical Keyboard", "price": 1890 },
+    { "id": 3, "title": "USB-C Hub", "price": 750 }
+  ],
+    "secripts" : {
+        "backend": "json-server --watch data/db.json --port 3000"
+    }
+}

@@ -1,0 +1,42 @@
+ใช้ vite ในการทำให้การ fetch ข้อมูลง่ายขึ้นและจัดระเบียบของไฟล์ต่างๆ
+get คือการดึงข้อมูลจากฐานข้อมูลออกมาแสดง
+สร้างไฟล์ fetch.js เพื่อเก็บการ fetch โดยเฉพาะ
+
+ฟังก์ชัน getData
+const res = await fetch(import.meta.env.VITE_APP_URL) ไปเอา fetch url มาจาก .env
+const data = await res.json() รอข้อมูลที่ได้จากการ fetch
+
+ฟังก์ชัน loadUser
+const data = await getData() เรียกใช้ getData เพื่อเอาข้อมูลทั้งหมดจากฐานข้อมูล
+const user = data.users[0] เอามาแค่ข้อมูลที่เก็บ
+document.getElementById("userName").textContent = "Name: " + user.name 
+document.getElementById("userEmail").textContent = "Email: " + user.email
+สร้าง DOM เพื่อตั้งค่า
+
+ฟังก์ชัน loadPosts
+const data = await getData() เรียกใช้ getData เพื่อเอาข้อมูลทั้งหมดจากฐานข้อมูล
+const posts = data.posts เอาแค่ value ของ data มาแสดง
+const list = document.getElementById("postList")
+list.innerHTML = "" เปลี่ยนให้เป็นว่าง
+posts.forEach((p) => {
+    const li = document.createElement("li")
+    li.textContent = p.title
+    list.appendChild(li)
+  })
+เอาไปลูปเพื่อสร้าง list จากข้อมูลทั้งหมดแล้วเพิ่มไปเป็นลูกของ li
+
+
+ฟังก์ชัน loadProducts
+const data = await getData() เรียกใช้ getData เพื่อเอาข้อมูลทั้งหมดจากฐานข้อมูล
+const products = data.products เอาแค่ products มาแสดง
+const box = document.getElementById("productBox")
+box.innerHTML = "" เปลี่ยนให้เป็นว่าง 
+products.forEach((p) => {
+    box.innerHTML += `Product: ${p.title}\nPrice: ${p.price} THB\n-----------------\n`
+  })  
+นำข้อมูลทั้งหมดมาแสดง
+
+document.getElementById("btnUser").addEventListener("click", loadUser)
+document.getElementById("btnPosts").addEventListener("click", loadPosts)
+document.getElementById("btnProducts").addEventListener("click", loadProducts)
+เพิ่ม event click ให้ทุกปุ่มพอคลิกปุ่มไหนก็จะไปเข้าฟังก์ชันนั้น

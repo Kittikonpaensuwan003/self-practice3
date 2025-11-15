@@ -1,0 +1,33 @@
+ให้aiเจนโจทย์มาให้ทำโดยอ้างอิงจากการสอบรอบที่2เพราะยังไม่ค่อยเข้าใจ
+
+ฟังก์ชัน setup
+const titleInput = document.getElementById("titleInput")
+const passwordInput = document.getElementById("passwordInput")
+เพื่อเก็บ input ที่กรอกเข้า
+titleInput.addEventListener("input", updateTitlePreview)
+passwordInput.addEventListener("input", evaluateStrength)
+เพื่อม input event ให้ทั้ง 2 ตัวแล้วส่งให้ไปทำงานฟังก์ชัน
+
+ฟังก์ชัน updateTitlePreview
+const input = document.getElementById("titleInput")
+const preview = document.getElementById("titlePreview")
+สร้างตัวแปรเพื่อที่จะเข้าถึง
+const text = input.value.trim() ทำการเอาค่าที่กรอกเข้ามาโดยการใช้ .value แล้วตัดช่องว่างหน้าหลังด้วยการใช้ .trim
+preview.textContent = text === "" ? "No title provided" : text เพื่อเปลี่ยนค่าใน preview ให้ตรงกับที่กรอก ใช้การเช็คแบบ ternary operater ถ้าไม่ได้กรอกข้อมูลจะแสดง "No title provided" แต่ถ้ากรอกจะเอาค่านั้นมาใส่
+
+ฟังก์ชัน evaluateStrength
+const pwd = document.getElementById("passwordInput").value
+const meter = document.getElementById("passwordMeter")
+const label = document.getElementById("strengthLabel")
+สร้างตัวแปรเพื่อที่จะเข้าถึง
+กำหนดว่า streng เริ่มต้นเป็นศูนย์
+if (pwd.length >= 6) strength++ ถ้าค่าที่กรอกมากกว่าหรือเท่ากับ 6 เพิ่ม streng 1
+if (/[A-Z]/.test(pwd)) strength++ ถ้ามี A-Z ที่เป็นตัวใหญ่  streng + 1
+if (/[0-9]/.test(pwd)) strength++ ถ้ามีเลข 0-9 streng + 1
+if (/[^A-Za-z0-9]/.test(pwd)) strength++ ถ้ามีทั้งหมด streng + 1
+จากนั้นเอา streng มาเข้า switch case เพื่อจะเช็คว่าตอนนี้รหัสมีความปลอดภัยระดับไหน
+เคส 0 รหัสไม่มีความปลอดภัย ตั้ง width = 0% , textContent ไม่มี , brackgroundColor ไม่เปลี่ยนสี
+เคส 1 ตั้ง width = 25% , textContent = weak , brackgroundColor = red
+เคส 2 ตั้ง width = 50% , textContent = Fair , brackgroundColor = orange
+เคส 3 ตั้ง width = 75% , textContent = Good , brackgroundColor = dodgerblue
+เคส 4 ตั้ง width = 100% , textContent = strong , brackgroundColor = greem

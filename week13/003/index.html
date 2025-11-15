@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>CRUD With Vite + json-server</title>
+</head>
+<body>
+
+  <h1>Product CRUD</h1>
+
+  <h2>GET Products</h2>
+  <button id="btnGet">Load Products</button>
+  <div id="productBox" style="white-space: pre-line;"></div>
+
+  <hr>
+
+  <h2>POST Product</h2>
+  <input id="newTitle" placeholder="Product title">
+  <input id="newPrice" placeholder="Price" type="number">
+  <button id="btnPost">Add Product</button>
+
+  <hr>
+
+  <h2>PUT Product</h2>
+  <input id="editId" placeholder="Product ID">
+  <input id="editTitle" placeholder="New title">
+  <input id="editPrice" placeholder="New price" type="number">
+  <button id="btnPut">Update Product</button>
+
+  <hr>
+
+  <h2>DELETE Product</h2>
+  <input id="deleteId" placeholder="Product ID">
+  <button id="btnDelete">Delete Product</button>
+
+  <script type="module" src="/src/script.js"></script>
+</body>
+</html>
