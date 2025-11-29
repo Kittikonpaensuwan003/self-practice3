@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>โจทย์ใหม่ 5 ข้อ — เฉลย (Timezone / Stopwatch / Theme / Posts / Check-in)</title>
+  <style>
+    :root{
+      --bg:#f6f6f6; --text:#222; --card:#fff;
+    }
+    body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans Thai", Arial; margin:16px; background:var(--bg); color:var(--text); }
+    .container { max-width:1100px; margin:0 auto; padding:12px; }
+    h1 { margin-top:0 }
+    .row { display:flex; gap:12px; align-items:flex-start; flex-wrap:wrap; }
+    .card { background:var(--card); padding:12px; border-radius:10px; box-shadow:0 6px 18px rgba(0,0,0,0.06); margin-bottom:12px; flex:1 1 320px; }
+    button { padding:6px 10px; border-radius:6px; border:1px solid rgba(0,0,0,0.08); cursor:pointer; background:linear-gradient(#fff,#f2f2f2); }
+    select,input[type="text"] { padding:6px 8px; border-radius:6px; border:1px solid #ccc; }
+    pre, .mono { font-family: "Courier New", monospace; background: #fafafa; padding:8px; border-radius:6px; }
+    ul { padding-left:1.1rem; margin:8px 0; }
+    .theme-btn { margin-right:8px; }
+    .small { font-size:0.9rem; color:#666; }
+    /* themes */
+    body.theme-dark { --bg:#121317; --text:#eee; --card:#1b1c1f; }
+    body.theme-accent { --bg:#fff8ef; --text:#2b2b2b; --card:#fff6ea; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>โจทย์ใหม่ 5 ข้อ — ตัวอย่าง HTML + JS (เฉลย)</h1>
+
+    <!-- 1 Timezone Clock -->
+    <section class="card" id="tzCard">
+      <h2>1) Timezone Clock</h2>
+      <div class="small">เลือกโซนเวลาแล้วแสดงเวลาแบบ YYYY-MM-DD HH:MM:SS อัปเดตทุกวินาที</div>
+      <div style="margin-top:8px;">
+        <label>Timezone:
+          <select id="tzSelect">
+            <option value="Asia/Bangkok">Asia/Bangkok</option>
+            <option value="Europe/London">Europe/London</option>
+            <option value="America/New_York">America/New_York</option>
+            <option value="Asia/Tokyo">Asia/Tokyo</option>
+            <option value="UTC">UTC</option>
+          </select>
+        </label>
+      </div>
+      <div style="margin-top:8px;">
+        <div id="tzClock" class="mono">YYYY-MM-DD HH:MM:SS</div>
+      </div>
+    </section>
+
+    <!-- 2 Stopwatch -->
+    <section class="card" id="swCard">
+      <h2>2) Stopwatch (Start / Stop / Lap / Reset)</h2>
+      <div class="small">แสดงเวลาแบบ MM:SS.mmm (มิลลิวินาที) พร้อมรายการ Lap</div>
+      <div style="margin-top:8px;">
+        <div id="stopwatch" class="mono">00:00.000</div>
+        <div style="margin-top:8px;">
+          <button id="swStart">Start</button>
+          <button id="swStop">Stop</button>
+          <button id="swLap">Lap</button>
+          <button id="swReset">Reset</button>
+        </div>
+        <h4 style="margin:8px 0 4px 0">Laps</h4>
+        <ul id="laps"></ul>
+      </div>
+    </section>
+
+    <!-- 3 Theme Toggle -->
+    <section class="card" id="themeCard">
+      <h2>3) Theme Toggle (light / dark / accent) + localStorage</h2>
+      <div class="small">คลิกเพื่อสลับธีม 3 แบบ และบันทึกธีมที่เลือกไว้</div>
+      <div style="margin-top:8px;">
+        <button class="theme-btn" id="themeToggle">Toggle Theme</button>
+        <span class="small">Current: <strong id="themeCurrent">light</strong></span>
+      </div>
+    </section>
+
+    <!-- 4 Fetch posts -->
+    <section class="card" id="postsCard">
+      <h2>4) Fetch Posts (แสดง 10 รายการแรก, รายการละปุ่ม Details ขยายเนื้อหา)</h2>
+      <div class="small">โหลดโพสต์จาก jsonplaceholder (โหลดครั้งเดียว) แล้วคลิก Details เพื่อขยาย/ยุบ body</div>
+      <div style="margin-top:8px;">
+        <button id="loadPosts">Load Posts</button>
+        <div id="postsStatus" class="small" style="margin-top:6px;"></div>
+        <ul id="postList"></ul>
+      </div>
+    </section>
+
+    <!-- 5 Check-in daily -->
+    <section class="card" id="checkinCard">
+      <h2>5) Daily Check-in (เก็บใน localStorage)</h2>
+      <div class="small">กรอกชื่อแล้ว Check-in จะบันทึกสำหรับวันที่นั้น (key แยกตาม YYYY-MM-DD)</div>
+      <div style="margin-top:8px;">
+        <label>ชื่อ: <input id="checkinName" type="text" placeholder="ใส่ชื่อของคุณ" /></label>
+        <button id="btnCheckinNow">Check in</button>
+        <div style="margin-top:8px;">
+          <div>วันนี้มีผู้เช็คอิน: <strong id="todayCount">0</strong></div>
+          <h4 style="margin:6px 0 4px 0">รายการวันนี้</h4>
+          <ul id="todayList"></ul>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <script src="scripts.js"></script>
+</body>
+</html>

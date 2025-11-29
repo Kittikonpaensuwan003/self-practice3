@@ -1,0 +1,167 @@
+ฟังก์ชัน formatDateTimeYMDHMS(d)
+const y = d.getFullYear()
+const m = pad(d.getMonth() + 1)
+const day = pad(d.getDate())
+const hh = pad(d.getHours())
+const mm = pad(d.getMinutes())
+const ss = pad(d.getSeconds())
+จัดรูปแบบของเวลา
+
+formatStopwatch(ms)
+if (ms < 0) ms = 0
+ถ้าตัวที่รับเข้ามาน้อยกว่า 0 ตั้ง ms เป็น 0
+const totalSeconds = Math.floor(ms / 1000)
+const minutes = Math.floor(totalSeconds / 60)
+const seconds = totalSeconds % 60
+const milli = ms % 1000
+หาเวลาจากตัวพารามิเตอร์ที่รับเข้ามา
+
+let _tzInterval = null
+
+ฟังก์ชัน updateTzClock()
+const sel = document.getElementById('tzSelect')
+เข้าถึงไอดี tzSelect เพื่อจะทำบางอย่าง
+const out = document.getElementById('tzClock')
+เข้าถึงไอดี tzClock เพื่อจะทำบางอย่าง
+ถ้าไม่มี sel หรือ out ให้จบโปรแกรม
+const tz = sel.value || 'UTC'
+ตั้ง timezone 
+const now = new Date()
+สร้างเวลา
+const parts = new Intl.DateTimeFormat('en-GB', {
+    timeZone: tz,
+    year: 'numeric', month: '2-digit', day: '2-digit',
+    hour: '2-digit', minute: '2-digit', second: '2-digit',
+    hour12: false
+  }).formatToParts(now)
+สร้างรูปแบบของเวลาที่จะแสดงโดยเวลาจะเปลี่ยนตาม timezone
+const map = {} 
+สร้าง obj ว่างเพื่อรอเก็บค่า
+for (const p of parts) map[p.type] = p.value
+const y = map.year, mo = map.month, d = map.day, hh = map.hour, mm = map.minute, ss = map.second
+แทนที่แต่ละค่าเข้าไปใน key
+out.textContent = `${y}-${mo}-${d} ${hh}:${mm}:${ss} (${tz})`
+เปลี่ยนข้อความใน out เป็น `${y}-${mo}-${d} ${hh}:${mm}:${ss} (${tz})`
+
+ฟังก์ชัน startTzClock()
+ถ้ามี _tzInterval ให้จบโปรแกรม
+เรียกใช้ updateTzClock()
+ตั้ง _tzInterval = setInterval(updateTzClock, 1000)
+
+ฟังก์ชัน stopTzClock()
+ถ้าไม่มี _tzInterval ให้จบโปรแกรม
+ตั้ง clearInterval(_tzInterval)
+ให้ _tzInterval = null
+
+let _swStartTime = 0
+let _swElapsedBefore = 0
+let _swInterval = null
+let _swRunning = false
+ตั้งค่าเริ่มต้นให้แต่ละค่า
+
+ฟังก์ชัน swRender(ms)
+const el = document.getElementById('stopwatch')
+เข้าถึงไอดี stopwatch เพื่อจะทำบางอย่าง
+ถ้ามี el จะเปลี่ยนข้อความเป็น รูปแบบที่ตั้ง
+
+ฟังก์ชัน swTick()
+const now = performance.now()
+const elapsed = _swElapsedBefore + (now - _swStartTime)
+swRender(Math.floor(elapsed))
+เรียกใช้ฟังก์ชัน swRender โดยส่งพารามิเตอร์เป็น elapsed 
+
+ฟังก์ชัน swStart()
+ถ้ามี _swRunning ให้จบโปรแกรม
+ตั้ง _swRunning = true
+ตั้ง _swStartTime = performance.now()
+ตั้ง _swInterval = setInterval(swTick, 25)
+
+ฟังก์ชัน swStop()
+ถ้าไม่มี _swRunning ให้จบโปรแกรม
+ตั้ง const now = performance.now()
+ตั้ง _swElapsedBefore += (now - _swStartTime)
+ตั้ง _swRunning = false
+ถ้ามี _swInterval ให้ตั้ง clearInterval(_swInterval); _swInterval = null
+เรียกใช้ฟังก์ชัน swRender(Math.floor(_swElapsedBefore))
+
+ฟังก์ชัน swReset()
+เรียกใช้ฟังก์ชัน swStop()
+ตั้ง _swElapsedBefore = 0
+ตั้ง _swStartTime = 0
+const laps = document.getElementById('laps')
+เข้าถึงไอดี laps เพื่อจะทำบางอย่าง
+ถ้ามี laps ให้ลบค่าทิ้ง
+เรียกใช้ฟังก์ชัน swRender(0)
+
+ฟังก์ชัน swLap()
+const laps = document.getElementById('laps')
+เข้าถึงไอดี laps เพื่อจะทำบางอย่าง
+ถ้าไม่มี laps ให้จบโปรแกรม
+const li = document.createElement('li')
+สร้าง li element
+เปลี่ยนข้อความ li.textContent = `Lap ${lapNumber} — ${formatStopwatch(Math.floor(elapsed))}`
+เพิ่ม laps ไปเป็นลูกของ li
+
+const THEMES = ['light','dark','accent']
+const THEME_KEY = 'app_theme_v1'
+ตั้งเป็นค่าเริ่มต้น
+
+ฟังก์ชัน applyTheme(name)
+document.body.classList.remove(...THEMES.map(t => 'theme-' + t))
+เปลี่ยน class อันเดิม
+ถ้ามีตัวที่รับเข้ามาและตรงกับ light เปลี่ยนเป็น light
+const cur = document.getElementById('themeCurrent')
+เข้าถึงไอดี themeCurrent เพื่อจะทำบางอย่าง
+
+ฟังก์ชัน loadThemeFromStorage()
+ใช้ try catch เพื่อไม่ให้โปรแกรมหยุดทำงานเมื่อเกิด error
+const t = localStorage.getItem(THEME_KEY) || 'light'
+เพื่อเก็บค่าแบบ localStorage
+applyTheme(t)
+เปลี่ยน theme 
+
+ฟังก์ชัน toggleTheme()
+const cur = (localStorage.getItem(THEME_KEY) || 'light')
+const idx = THEMES.indexOf(cur)
+const next = THEMES[(idx + 1) % THEMES.length]
+เปลี่ยน theme เป็นอันต่อไป
+
+let _postsCache = null 
+ตั้งเป็นค่าเริ่มต้น
+
+ฟังก์ชัน loadPosts()
+const status = document.getElementById('postsStatus')
+เข้าถึงไอดี postsStatus เพื่อจะทำบางอย่าง
+const list = document.getElementById('postList')
+เข้าถึงไอดี postList เพื่อจะทำบางอย่าง
+ถ้าไม่มี list ให้จบโปรแกรม
+เปลี่ยนให้เป็นว่าง
+ถ้ามี status เปลี่ยนข้อความให้เป็น Loading...
+ไป fetch ข้อมูลแล้วนำไปลูปเพื่อสร้างรูปแบบ
+
+ฟังก์ชัน todayKey(d = new Date())
+const y = d.getFullYear()
+const m = pad(d.getMonth() + 1)
+const day = pad(d.getDate())
+สร้างตัวแปรเพื่อเอาเวลา
+
+ฟังก์ชัน loadTodayListToUI()
+const key = todayKey()
+เรียกใช้ฟังก์ชัน todayKey() เพื่อเอาข้อมูล
+const raw = localStorage.getItem(key)
+เก็บค่า localStorage
+const ul = document.getElementById('todayList')
+เข้าถึงไอดี todayList เพื่อจะทำบางอย่าง
+const cnt = document.getElementById('todayCount')
+เข้าถึงไอดี todayCount เพื่อจะทำบางอย่าง
+ถ้ามี ul ให้เปลี่ยนเป็นค่าว่างแล้วเอาไปลูปเพื่อสร้าง element
+
+ฟังก์ชัน saveCheckin(name)
+ถ้าไม่มีชื่อให้แสดงข้อความ กรุณากรอกชื่อ
+const key = todayKey()
+เรียกใช้ฟังก์ชัน todayKey() เพื่อเอาข้อมูล
+const raw = localStorage.getItem(key)
+เก็บค่า localStorage
+ทำการเช็คค่าซ้ำ ถ้ามีจะจบโปรแกรม
+
+ใช้ event DOMContentLoaded เพื่อโหลดข้อมูลทั้งหมด

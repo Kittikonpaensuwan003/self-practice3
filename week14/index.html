@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>JS DOM · Time · Logic — Examples</title>
+  <style>
+    body { font-family: system-ui, sans-serif; padding: 24px; }
+    .card { border: 1px solid #ddd; padding: 16px; border-radius: 8px; margin-bottom: 16px; }
+    #clock { font-size: 1.4rem; font-weight: bold; }
+  </style>
+</head>
+<body>
+
+  <h1>ตัวอย่าง DOM + Time + Logic</h1>
+
+  <section class="card">
+    <h2>1) นาฬิกา Real-time</h2>
+    <div id="clock">--:--:--</div>
+  </section>
+
+  <section class="card">
+    <h2>2) Timer Start / Stop</h2>
+    <button id="timer-start">Start</button>
+    <button id="timer-stop">Stop</button>
+    <span id="timer">00:00:00</span>
+  </section>
+
+  <section class="card">
+    <h2>3) เปลี่ยนสีพื้นหลังทุกวินาที</h2>
+    <button id="bg-start">Start Background</button>
+    <button id="bg-stop">Stop Background</button>
+    <p id="bg-current">สีปัจจุบัน: #ffffff</p>
+  </section>
+
+  <section class="card">
+    <h2>4) Countdown Timer</h2>
+    <input id="countdown-input" type="number" min="1" value="10" />
+    <button id="countdown-start">Start Countdown</button>
+    <div id="countdown-display">--</div>
+  </section>
+
+  <section class="card">
+    <h2>5) Check-in</h2>
+    <button id="checkin-btn">Check-in</button>
+    <ul id="checkin-list"></ul>
+  </section>
+
+  <script src="scripts.js"></script>
+</body>
+</html>

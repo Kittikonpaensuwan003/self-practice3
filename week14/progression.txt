@@ -1,0 +1,116 @@
+ฟังก์ชัน pad(n)
+เอาตัวแปรที่รับเข้ามาไปแปลงเป็น string และเพิ่ม 0 ข้างให้เพื่อให้ความยาวเป็น 2 
+
+ฟังก์ชัน formatHMS(sec)
+เอาไว้จัดรูปแบบของการแสดงเวลา
+const h = Math.floor(sec / 3600)
+หาเลขของชั่วโมงโดยการเอา ตัวแปรที่รับเข้ามาไปหาร 3600
+const m = Math.floor((sec % 3600) / 60)
+หาตัวเลขของนาทีโดยการเอาตัวแปรที่รับเข้ามาไปหาเศษแล้วเอาไปหาร 60
+const s = sec % 60
+หาตัวเลขของวินาทีโดยการเอาตัวแปรที่รับเข้ามาไปหาร 60 เพื่อหาเศษ
+คืนค่าด้วยการใช้ฟังก์ชัน pad เพื่อจัดรูปแบบของเวลา
+
+let _clockIntervalId = null
+เพื่อเป็นเวลาของทั้งหมด
+
+ฟังก์ชัน updateRealTimeClock()
+เป็นฟังก์ชันที่จะแสดงเวลาแบบ real time 
+const el = document.getElementById("clock")
+เข้าถึงไอดี clock เพื่อจะทำบางอย่าง
+เช็คถ้าไม่มี el ให้จบโปรแกรม
+const d = new Date() 
+สร้าง obj ของเวลาใหม่
+el.textContent = `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`
+เปลี่ยนข้อความใน el โดยการใช้ฟังก์ชัน pad ในการจัดรูปแบบและใช้ method ของเวลาในการดึงเอา ชั่วโมง นาที วินาที
+
+function startRealTimeClock()
+เป็นฟังก์ชันที่จะเริ่มการนับเวลา
+เช็ค _clockIntervalId ให้จบโปรแกรม
+เรียกใช้ฟังก์ชัน updateRealTimeClock()
+ตั้ง _clockIntervalId = setInterval(updateRealTimeClock, 1000)
+
+stopRealTimeClock()
+เป็นฟังก์ชันที่จะหยุดการนับเวลา
+เช็คถ้าไม่มี _clockIntervalId ให้จบโปรแกรม
+ใช้ clearInterval(_clockIntervalId)
+ตั้ง  _clockIntervalId = null
+
+let _countUpIntervalId = null
+let _countUpElapsed = 0
+
+ฟังก์ชัน tickCountUp()
+const display = document.getElementById("timer")
+เข้าถึงไอดี timer เพื่อจะทำบางอย่าง
+ถ้าไม่มี display ให้จบโปรแกรม
+_countUpElapsed += 1
+เพิ่ม _countUpElapsed ทีละ 1
+display.textContent = formatHMS(_countUpElapsed)
+เปลี่ยนข้อความใน display โดยการใช้ฟังก์ชัน formatHMS และส่งพารามิเตอร์ _countUpElapsed เพื่อไปหาเวลา
+
+ฟังก์ชัน startCountUpTimer()
+เช็คถ้ามี _countUpIntervalId ให้จบโปรแกรม
+ตั้ง _countUpIntervalId = setInterval(tickCountUp, 1000)
+
+ฟังก์ชัน stopCountUpTimer()
+ตั้ง _countUpElapsed = 0
+const display = document.getElementById("timer")
+เข้าถึงไอดี timer เพื่อจะทำบางอย่าง
+ถ้ามี display ให้เปลี่ยนข้อความใน display ไปเรียกฟังก์ชัน formatHMS(0)
+
+let _bgIntervalId = null
+randomHexColor()
+return "#" + Math.floor(Math.random() * 0xffffff).toString(16).padStart(6, "0")
+คืนค่าด้วยการสุ่มเลขเพื่อเอาไปเปลี่ยนสี
+
+ฟังก์ชัน tickBackgroundChange()
+const label = document.getElementById("bg-current")
+เข้าถึงไอดี bg-current เพื่อจะทำบางอย่าง
+const color = randomHexColor()
+เปลี่ยนสีด้วยการไปเรียกใช้ฟังก์ชัน randomHexColor() เพื่อสุ่มสี
+document.body.style.backgroundColor = color
+เปลี่ยนสีพื้นหลังโดยเอาสีจากการสุ่ม
+ถ้ามี label จะเปลี่ยนข้อความใน label เพื่อบอกว่าใช้สีอะไรอยู่
+
+ฟังก์ชัน startBackgroundChange()
+ถ้ามี _bgIntervalId ให้จบโปรแกรม
+tickBackgroundChange()
+เรียกใช้ฟังก์ชัน tickBackgroundChange() 
+ตั้ง _bgIntervalId = setInterval(tickBackgroundChange, 1000)
+
+ฟังก์ชัน stopBackgroundChange()
+ถ้าไม่มี _bgIntervalId ให้จบโปรแกรม
+ตั้ง clearInterval(_bgIntervalId)
+
+let _countdownIntervalId = null
+let _countdownRemaining = 0
+
+ฟังก์ชัน tickCountdown()
+const display = document.getElementById("countdown-display")
+เข้าถึงไอดี countdown-display เพื่อจะทำบางอย่าง
+ถ้าไม่มี display ให้จบโปรแกรม
+_countdownRemaining -= 1
+ลบทีละ 1
+ถ้า _countdownRemaining <= 0
+ให้ clearInterval(_countdownIntervalId)
+ตั้ง _countdownIntervalId = null
+เปลี่ยนข้อความใน display เป็น time's up!
+ถ้าไม่ใช่ตั้งข้อความใน display  `${_countdownRemaining} วินาที (${formatHMS(_countdownRemaining)})`
+
+ฟังก์ชัน startCountdown(seconds) 
+const display = document.getElementById("countdown-display")
+เข้าถึงไอดี countdown-display เพื่อจะทำบางอย่าง
+ถ้าไม่มี display ให้จบโปรแกรม
+เช็คเอาแค่ตัวเลขที่เป็นจำนวนเต็ม
+ถ้ามี _countdownIntervalId
+ให้ clearInterval(_countdownIntervalId)
+ตั้ง _countdownIntervalId = null
+
+ตั้งเป็นพารามิเตอร์ที่รับเข้ามา _countdownRemaining = seconds
+ตั้ง display.textContent = `${_countdownRemaining} วินาที (${formatHMS(_countdownRemaining)})`
+ตั้ง _countdownIntervalId = setInterval(tickCountdown, 1000)
+
+ฟังก์ชัน stopCountdown()
+ถ้าไม่มี _countdownIntervalId ให้จบโปรแกรม
+ตั้ง clearInterval(_countdownIntervalId)
+ให้ _countdownIntervalId = null
